@@ -2,16 +2,6 @@
 #########
 .DS_Store
 *~
-
-# Rust project #
-################
-target/
-0_out/
-graphics/
-src/bk/
-studentGradeBook_Repos/
-pairings.txt
-
 # bash #
 ########
 .bash_history
