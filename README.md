@@ -10,7 +10,7 @@
 
 [![BLM](https://img.shields.io/badge/BlackLivesMatter-yellow)](https://blacklivesmatter.com/)
 
-GitHub link: https://github.com/developmentAC/
+GitHub link: https://github.com/developmentAC/grade_alert_rs
 
 ## Table of contents
 - [Grade\_Alert\_rs: An automated tool written in Rust to help teachers by extracting student grade information from CSV files so that it can be conveniently diffused to members of a class](#grade_alert_rs-an-automated-tool-written-in-rust-to-help-teachers-by-extracting-student-grade-information-from-csv-files-so-that-it-can-be-conveniently-diffused-to-members-of-a-class)
