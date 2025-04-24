@@ -148,6 +148,8 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
 }
 
 fn process_pairings(pairings_file: &str, output_dir: &str) {
+    let mut dir_names = std::collections::HashSet::new(); // Use a HashSet to avoid duplicates
+
     // Check if the pairings file exists
     if !std::path::Path::new(pairings_file).exists() {
         let msg = format!("\t Pairings file does not exist: {}", pairings_file)
@@ -165,13 +167,18 @@ fn process_pairings(pairings_file: &str, output_dir: &str) {
             let source_file = format!("{}/{}", output_dir, parts[0]);
             let destination_dir = parts[1];
 
-            // // Create the destination directories if they do not exist :: is this necessary?
+
+                // // Create the destination directories if they do not exist :: is this necessary?
             // if let Err(e) = std::fs::create_dir_all(destination_dir) {
             //     eprintln!("Failed to create directory {}: {}", destination_dir, e);
             //     continue;
             // } else {
             //     println!("Created directory: {}", destination_dir);
             // }
+
+
+            // Add the destination directory to the set
+            dir_names.insert(destination_dir.to_string());
 
             // Check if the destination directory exists
             if !std::path::Path::new(destination_dir).exists() {
@@ -203,4 +210,16 @@ fn process_pairings(pairings_file: &str, output_dir: &str) {
             }
         }
     }
+
+    // Write the list of directories to dirNames.txt
+    let dir_names_file = format!("{}/dirNames.txt", output_dir);
+    let mut file = File::create(&dir_names_file).expect("Failed to create dirNames.txt");
+    for dir in dir_names {
+        writeln!(file, "{}", dir).expect("Failed to write to dirNames.txt");
+    }
+
+    let msg = format!("\t Saved directory names to {}", dir_names_file)
+        .bright_green()
+        .bold();
+    println!("{}", msg);
 }
