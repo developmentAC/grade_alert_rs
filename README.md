@@ -297,7 +297,7 @@ shows the demonstration files.
 
 ```
  ./0_out/
-   - dirNames.txt
+   - dirNames.txt # this may need to be placed in the root directory
    - student1_gradebook.md
    - student2_gradebook.md
    - student3_gradebook.md
