@@ -24,7 +24,7 @@ GitHub link: https://github.com/developmentAC/__Grade_Alert_rs__
     - [Placing Gradebook Files](#placing-gradebook-files)
           - [Usage](#usage-1)
           - [Output](#output)
-    - [TODO: dirNames](#todo-dirnames)
+    - [DirNames](#dirnames)
     - [Pushing in Bulk](#pushing-in-bulk)
     - [Structure](#structure)
     - [A work in progress](#a-work-in-progress)
@@ -192,7 +192,7 @@ Headers: StringRecord(["Student Name", "Student ID", "Activity 01", "Activity 01
 
 ```
 
-### TODO: dirNames
+### DirNames
 
 Note that a new file, `0_out/dirNames.txt` will be created from this copying operation, shown below.
 
@@ -239,7 +239,7 @@ the command, `sh bulkPusher.sh` when the files have been copied into the grade b
 ```bash
 
 # Bulk Pusher script.
-# Date: 25 Sept 2023
+# Date: 24 April 2025
 # Oliver Bonham-Carter, obonhamcarter@allegheny.edu
 # This script uses the File, dirNames.txt, to locate repositories to push
 # The current date is printed in the commit message of the submit
