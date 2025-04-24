@@ -1,4 +1,4 @@
-# Grade_Alert_rs: An automated tool written in Rust to help teachers by extracting student grade information from CSV files so that it can be conveniently diffused to members of a class
+# __Grade_Alert_rs__: An automated tool written in Rust to help teachers by extracting student grade information from CSV files so that it can be conveniently diffused to members of a class
 
 - Oliver Bonham-Carter, [Web](https://www.oliverbonhamcarter.com/)
 - email: obonhamcarter@allegheny.edu
@@ -10,10 +10,10 @@
 
 [![BLM](https://img.shields.io/badge/BlackLivesMatter-yellow)](https://blacklivesmatter.com/)
 
-GitHub link: https://github.com/developmentAC/grade_alert_rs
+GitHub link: https://github.com/developmentAC/__Grade_Alert_rs__
 
 ## Table of contents
-- [Grade\_Alert\_rs: An automated tool written in Rust to help teachers by extracting student grade information from CSV files so that it can be conveniently diffused to members of a class](#grade_alert_rs-an-automated-tool-written-in-rust-to-help-teachers-by-extracting-student-grade-information-from-csv-files-so-that-it-can-be-conveniently-diffused-to-members-of-a-class)
+- [__Grade\_Alert\_rs__: An automated tool written in Rust to help teachers by extracting student grade information from CSV files so that it can be conveniently diffused to members of a class](#grade_alert_rs-an-automated-tool-written-in-rust-to-help-teachers-by-extracting-student-grade-information-from-csv-files-so-that-it-can-be-conveniently-diffused-to-members-of-a-class)
   - [Table of contents](#table-of-contents)
   - [Overview](#overview)
   - [Tool](#tool)
@@ -24,6 +24,7 @@ GitHub link: https://github.com/developmentAC/grade_alert_rs
     - [Placing Gradebook Files](#placing-gradebook-files)
           - [Usage](#usage-1)
           - [Output](#output)
+    - [TODO: dirNames](#todo-dirnames)
     - [Pushing in Bulk](#pushing-in-bulk)
     - [Structure](#structure)
     - [Summary of Commands](#summary-of-commands)
@@ -32,11 +33,11 @@ GitHub link: https://github.com/developmentAC/grade_alert_rs
 ## Overview
 GitHub Classroom is an excellent resource to handle work repositories for a course of many students. Each student, after "accepting" an assignment is issued a unique repository in which work can be completed and pushed to the instructor.
 
-Here, we suggest that GitHub Classroom be used to report grades to each student who has a grade book "assignment" repository. The instructor, who has access to this repository, places a file containing grades and feedback into this repository for the student to consult. With a little setup and configuration, Grade-Alert can place each gradebook file into its corresponding repository. This step saves the user from having to remember which file goes into what repository. All parts of this project have been written to run in Linux or MacOS operating systems. If you are using Windows, then parts of the project (such as file copying) may not work as expected.
+Here, we suggest that GitHub Classroom be used to report grades to each student who has a grade book "assignment" repository. The instructor, who has access to this repository, places a file containing grades and feedback into this repository for the student to consult. With a little setup and configuration, __Grade_Alert_rs__ can place each gradebook file into its corresponding repository. This step saves the user from having to remember which file goes into what repository. All parts of this project have been written to run in Linux or MacOS operating systems. If you are using Windows, then parts of the project (such as file copying) may not work as expected.
 
 ## Tool
 
-All grades in a course are kept in a CSV spreadsheet. Grade-alert parses each row of the  spreadsheet and all contents are formatted and placed into a separate markdown file which is named according to the first column of the spreadsheet. These files are then to be placed into grade book repositories (discussed below) and pushed for the student to access.
+All grades in a course are kept in a CSV spreadsheet. __Grade_Alert_rs__ parses each row of the  spreadsheet and all contents are formatted and placed into a separate markdown file which is named according to the first column of the spreadsheet. These files are then to be placed into grade book repositories (discussed below) and pushed for the student to access.
 
 ### Usage
 
@@ -83,9 +84,9 @@ called `student_repos`.
 
 ### CSV
 
-To use this Grade-Alert, the student grades are to be kept in a comma separated variable (CSV) file.
+To use this __Grade_Alert_rs__, the student grades are to be kept in a comma separated variable (CSV) file.
 Please note that no commas may be used in the fields of the CSV file as they will serve to confuse
-the true delimiters of the CSV structure and will prevent Grade-Alert from opening the CSV files correctly.
+the true delimiters of the CSV structure and will prevent __Grade_Alert_rs__ from opening the CSV files correctly.
 
 In a grade book spreadsheet, each row contains the grades of the individuals in the course. The columns
 header provide details of the assignment and type of feedback. The first column **must** contain the
@@ -106,7 +107,7 @@ files is shown below in the table.
 
 ### Outputted files
 
-After running the Grade-Alert tool on a CSV file containing the information of the above
+After running the __Grade_Alert_rs__ tool on a CSV file containing the information of the above
 table, a file for each row is outputted. For example, the report of `student1` will take
 the following form.
 
@@ -135,7 +136,7 @@ pushed out for the student.
 
 ### Placing Gradebook Files
 
-Using option `-P`, the user can have Grade-Alert copy the gradebook markdown files into
+Using option `-P`, the user can have __Grade_Alert_rs__ copy the gradebook markdown files into
 their associated repositories for bulk pushing (discussed below).
 
 ###### Usage
@@ -169,32 +170,30 @@ __Note: Be sure to remove all spaces in the `pairings.txt` file.__
 For his or her own requirements, the user is to modify this file, which is essentially a `csv`
 file that could be created by a spreadsheet such as [LibreOffice](https://www.libreoffice.org/)
 Calc. If the pairing file is not present when the option `-P` is invoked, then an error message
-will result and end the Grade-Alert execution.
+will result and end the __Grade_Alert_rs__ execution.
 
 ###### Output
-The output of this copying-job is shown below.
+The output for the command `cargo run -- -i sampleData/demoGrades_short.csv` is shown below.
+```
+	 Package name: 'grade_alert_rs2'.
+	 Package version: '0.1.0'.
+	 Package edition: '2024'.
+
+Headers: StringRecord(["Student Name", "Student ID", "Activity 01", "Activity 01 Comments", "Activity 02", "Activity 02 comments", "Activity 03", "Activity 03 comments"])
+
+	 Copied file 0_out/student1.md to studentGradeBook_Repos/gradebook_A/student1.md
+	 Copied file 0_out/student2.md to studentGradeBook_Repos/gradebook_B/student2.md
+	 Copied file 0_out/student3.md to studentGradeBook_Repos/gradebook_C/student3.md
+	 Copied file 0_out/student4.md to studentGradeBook_Repos/gradebook_D/student4.md
+	 Directory does not exist: studentGradeBook_Repos/gradebook_E/.
+	 File 0_out/student5.md was not copied.
+	 Copied file 0_out/student6.md to studentGradeBook_Repos/gradebook_F/student6.md
+	 Copied file 0_out/student7.md to studentGradeBook_Repos/gradebook_G/student7.md
+	 Copied file 0_out/student7.md to studentGradeBook_Repos/x_gradebook_G/student7.md
 
 ```
-[+] Copying files into associated repositories
- as defined in pairings.txt.
 
-0_out/student1_gradebook.md
-	-->  student_repos/grade-book-student1/
-0_out/student2_gradebook.md
-	-->  student_repos/grade-book-student2/
-0_out/student3_gradebook.md
-	-->  student_repos/grade-book-student3/
-0_out/student4_gradebook.md
-	-->  student_repos/grade-book-student4/
-0_out/student5_gradebook.md
-	-->  student_repos/grade-book-student5/
-0_out/student6_gradebook.md
-	-->  student_repos/grade-book-student6/
-0_out/student7_gradebook.md
-	-->  student_repos/grade-book-student7/
-
-[+] Saving file for bulkPusher: dirNames
-```
+### TODO: dirNames
 
 Note that a new file, `dirNames` will be created from this copying operation, shown below.
 
@@ -325,7 +324,7 @@ shows the demonstration files.
  - repoBuilder.sh
 ```
 
-*Note: As the user uses Grade-Alert to handle gradebook repositories and markdown files, having
+*Note: As the user uses __Grade_Alert_rs__ to handle gradebook repositories and markdown files, having
 the files in the above order will help to simplify the commands to use them.*
 
 
@@ -348,7 +347,7 @@ the files in the above order will help to simplify the commands to use them.*
 
 ### A work in progress
 
-Check back often to see the evolution of this project!! Grade-Alert is a work-in-progress.
+Check back often to see the evolution of this project!! __Grade_Alert_rs__ is a work-in-progress.
 Updates are likely to come soon with feedback. If you would like to contribute to this project,
 __then please do!__ For instance, if you see some low-hanging fruit or task that you could easily
 complete, that could add value to the project, then I would love to have your insight.
