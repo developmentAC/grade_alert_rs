@@ -4,7 +4,7 @@
 - email: obonhamcarter@allegheny.edu
 - Date: 24th April 2025
 
-![logo](graphics/gradeAlert_logo.png)
+![logo](graphics/logo.png)
 
 [![MIT Licence](https://img.shields.io/bower/l/bootstrap)](https://opensource.org/licenses/MIT)
 
