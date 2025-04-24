@@ -27,7 +27,6 @@ GitHub link: https://github.com/developmentAC/__Grade_Alert_rs__
     - [TODO: dirNames](#todo-dirnames)
     - [Pushing in Bulk](#pushing-in-bulk)
     - [Structure](#structure)
-    - [Summary of Commands](#summary-of-commands)
     - [A work in progress](#a-work-in-progress)
 
 ## Overview
@@ -298,6 +297,7 @@ shows the demonstration files.
 
 ```
  ./0_out/
+   - dirNames.txt
    - student1_gradebook.md
    - student2_gradebook.md
    - student3_gradebook.md
@@ -318,32 +318,12 @@ shows the demonstration files.
  ./
  - bulkPusher.sh
  - demoGrades_short.csv
- - dirNames.txt
  - gradeAlert.py
  - pairings.txt
- - repoBuilder.sh
 ```
 
 *Note: As the user uses __Grade_Alert_rs__ to handle gradebook repositories and markdown files, having
 the files in the above order will help to simplify the commands to use them.*
-
-
-### Summary of Commands
-
- - Be sure that you have all student repositories in a directory called, `student_repos/`.
- - Note: it is recommended that these repositories be created by copying all the `git clone` statements into a script file so that the repositories can be automatically created with each grade-update. Once the grades have been updated, then these repositories could be removed from the working directory to reduce clutter. Just an idea.
-
- - Save a gradebook file in a CSV file format (ex: `mygradebook.csv`).
-
- - Be sure that the `pairings.txt` file is present in the local directory and has been correctly formatted. For example, each line has the following format:
-  - `gradeBookFile,repositoryPath`
-  - Note: the line will look like: `studentName_gradebook.md,student_repos/gradebook-StudentName`)
-
- - Run `python3 gradeAlert.py mygradebook.csv` (this makes the gradebook files from the rows of the CSV file and are stored in `0_out/`).
-
- - Run `python3 gradeAlert.py -p` (this copies the gradebook files into their associated repositories which are defined in the `pairing.txt` file.)
- - Use `bulkPusher.sh` to push out all updated files to the gradebook repositories.
-
 
 ### A work in progress
 
