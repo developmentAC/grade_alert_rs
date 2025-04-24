@@ -195,7 +195,7 @@ Headers: StringRecord(["Student Name", "Student ID", "Activity 01", "Activity 01
 
 ### TODO: dirNames
 
-Note that a new file, `dirNames` will be created from this copying operation, shown below.
+Note that a new file, `0_out/dirNames.txt` will be created from this copying operation, shown below.
 
 ```
 student_repos/grade-book-student1/
@@ -207,7 +207,7 @@ student_repos/grade-book-student6/
 student_repos/grade-book-student7/
 ```
 
-The `dirNames` file may be used with the `bulkPusher.sh` script (explained below) for bulk pushing
+The `dirNames.txt` file may be used with the `bulkPusher.sh` script (explained below) for bulk pushing
 using `git`. We note that this file is especially useful since it only lists the successful copies
 of gradebook files into corresponding repositories. If an error occurred during copying, then the
 program would skip the repository and the `dirNames` would have no listing for the offending
@@ -242,7 +242,7 @@ the command, `sh bulkPusher.sh` when the files have been copied into the grade b
 # Bulk Pusher script.
 # Date: 25 Sept 2023
 # Oliver Bonham-Carter, obonhamcarter@allegheny.edu
-# This script uses the File, dirNames, to locate repositories to push
+# This script uses the File, dirNames.txt, to locate repositories to push
 # The current date is printed in the commit message of the submit
 # A file, "0_thisLastPush.txt" is created to state when the last bulk push was completed.
 
@@ -254,7 +254,7 @@ date > 0_thisLastPush.txt
 
 pwd > mydir
 for z in `cat mydir`; do cd $z; done
-for DIRNAME in $(cat dirNames)
+for DIRNAME in $(cat dirNames.txt)
 do
     cd $DIRNAME
     echo Checking: $DIRNAME
@@ -267,12 +267,12 @@ done
 rm mydir
 ```
 
-The file, `dirNames` contains the paths of the repositories to which we push. To conveniently
+The file, `dirNames.txt` contains the paths of the repositories to which we push. To conveniently
 prepare this file, begin with the following command from the directory where the class
 repositories are stored.
 
 ``` bash
-ls > dirNames
+ls > dirNames.txt
 ```
 
 This file is to be edited to contain only the paths to the student grade book repositories. This
@@ -284,11 +284,11 @@ The contents of the student repositories directory should be similar to the foll
 repos/gradebook-student1
 repos/gradebook-student2
 ...
-repos/dirNames
+repos/dirNames.txt
 repos/bulkPusher.sh
 ```
 
-In a convenient setup, the repositories, the files `dirNames` and `bulkPusher.sh` are to stored
+In a convenient setup, the repositories, the files `dirNames.txt` and `bulkPusher.sh` are to stored
 in root directory. The structure of the file system is discussed below.
 
 ### Structure
@@ -318,7 +318,7 @@ shows the demonstration files.
  ./
  - bulkPusher.sh
  - demoGrades_short.csv
- - dirNames
+ - dirNames.txt
  - gradeAlert.py
  - pairings.txt
  - repoBuilder.sh

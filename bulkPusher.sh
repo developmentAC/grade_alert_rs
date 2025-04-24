@@ -18,9 +18,9 @@ for DIRNAME in $(cat dirNames.txt);  # This file should contain the names of the
 do
     cd $DIRNAME
     echo Checking: $DIRNAME
-     git add -A
-     git commit -m "Grade update: $NOW"
-     git push
+     echo git add -A
+     echo git commit -m "Grade update: $NOW"
+     echo git push
     cd $z/
 done
 
