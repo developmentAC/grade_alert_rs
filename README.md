@@ -50,25 +50,26 @@ To process the sample CSV spreadsheet, `samples/demoGrades_short.csv` (files for
 
 ### Grade book repositories
 
-GradeAlert works to copy grade book reports from the grade spreadsheet into GitHub repositories to be pushed.
-The students' repositories must first be created. It is recommended that a script be used to create pull the
-repository for each student in the class. 
+GradeAlert works to copy grade book reports which are parsed from the grade spreadsheet, and place them into the GitHub repositories of students where they are to be pushed out for the student to access. The instructor must have access to the repositories which may be created by GitHub Classroom. 
+
+We note here that these repositories are created by the instructor using GitHub Classroom to make an empty assignment. When a student "accepts" the "assignment", by clicking on the URL from GitHub Classroom, they are essentially creating a copy of the empty repository. The instructor is then able to access this repository and place files into it.
+
+It is recommended that a script be used to pull all repositories for the student members of the class.
 
 Assume that the ssh URLs for cloning grade book repository from GitHub are the following; 
 
-```
-git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student1.git
-git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student2.git
-git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student3.git
-git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student4.git
+``` text
+git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student1.git
+git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student2.git
+git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student3.git
+git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student4.git
 ```
 
-Place each `git clone` line in a batch file `repoBuilder.sh` to automate the cloning process
-of these repositories.
+Place each `git clone` on each line and then create a batch file, `repoBuilder.sh`, to automate the cloning process of these repositories. The instructor will need these repositories to place the grade book files into.
 
 A sample `repoBuilder.sh` takes the following form.
 
-```
+``` text
 git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student1.git
 git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student2.git
 git clone git@github.com:CMPSC-305-Allegheny-College-Fall-2023/grade-book-student3.git
@@ -78,8 +79,7 @@ mkdir student_repos
 mv grade-book* student_repos/
 ```
 
-Note that there is a bash line to move all cloned repositories into a created directory 
-called `student_repos`.
+Note that there is a bash line to move all cloned repositories into a created directory called `student_repos`.
 
 ### CSV
 
@@ -113,7 +113,7 @@ the following form.
 
 File: `student1_gradebook.md`
 
-```
+``` text
 Student Name : student1
 
 Student ID : x0001
@@ -160,7 +160,7 @@ student7_gradebook.md,student_repos/grade-book-student7/
 After running `gradeAlert` on a `CSV` file, you can create an instant listing of grade book files
 which are placed in `pairings.txt`. Please use the following bash command for this task. 
 
-```
+``` bash
 ls -l | cut -d " " -f 11 | sort | uniq > pairings.txt
 ```
 
@@ -196,7 +196,7 @@ Headers: StringRecord(["Student Name", "Student ID", "Activity 01", "Activity 01
 
 Note that a new file, `0_out/dirNames.txt` will be created from this copying operation, shown below.
 
-```
+``` text
 student_repos/grade-book-student1/
 student_repos/grade-book-student2/
 student_repos/grade-book-student3/
