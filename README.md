@@ -42,11 +42,18 @@ All grades in a course are kept in a CSV spreadsheet. __Grade_Alert_rs__ parses 
 
 The [Rust programming language](https://www.rust-lang.org/) is necessary to compile the code of this project to run.
 
-To process the sample CSV spreadsheet, `samples/demoGrades_short.csv` (files formats are discussed below), the following command must be used `cargo run -- -i sampleData/demoGrades_short.csv`. This command will create a directory called `0_out/` and place the markdown files into this directory. The files are named according to the first column of the CSV file. For example, the file for `student1` will be called `student1_gradebook.md`.
+To process the sample CSV spreadsheet, `samples/demoGrades_short.csv` (files formats are discussed below), the following command must be used;
 
+  `cargo run -- -i sampleData/demoGrades_short.csv`. 
 
+Note: if there is a particular pairings file to be used to indicate which files are to be placed into what repositories, then the command to use this file is the following.
 
-*Note: discussion for each of these commands is below.*
+``` bash
+cargo run -- -i sampleData/demoGrades_short.csv --pairings pairings.txt`
+```
+
+This command will create a directory called `0_out/` and place the markdown files into this directory. The files are named according to the first column of the CSV file. For example, the file for `student1` will be called `student1_gradebook.md`.
+
 
 ### Grade book repositories
 
@@ -130,24 +137,21 @@ ____
 
 ```
 
-Each prepared file is then to be placed into its associated grade book repository and is
-pushed out for the student.
+Each prepared file is then to be placed into its associated grade book repository and is pushed out for the student.
 
 ### Placing Gradebook Files
 
-Using option `-P`, the user can have __Grade_Alert_rs__ copy the gradebook markdown files into
-their associated repositories for bulk pushing (discussed below).
+The user can have __Grade_Alert_rs__ copy the gradebook markdown files into their associated repositories for bulk pushing (discussed below).
 
 ###### Usage
 
-`./gradeAlert.py -P`
+`cargo run -- -i sampleData/demoGrades_short.csv`
 
- For this step, the File `pairings.txt` must be in the same directory as the `gradeAlert.py`.
- The pairing file lists the files (*left*) separated by a comma, and the repositories
- (*right*) into which the file is to be copied before pushing. Shown below are the contents
+
+ For this step, the File `pairings.txt` must be in the local directory as the project. The pairing file lists the files (*left*) separated by a comma, and the repositories  (*right*) into which the file is to be copied before pushing. Shown below are the contents
  of `pairings.txt` for the accompanying gradebook spreadsheet example.
 
-```
+``` text
 student1_gradebook.md,student_repos/grade-book-student1/
 student2_gradebook.md,student_repos/grade-book-student2/
 student3_gradebook.md,student_repos/grade-book-student3/
@@ -157,40 +161,9 @@ student6_gradebook.md,student_repos/grade-book-student6/
 student7_gradebook.md,student_repos/grade-book-student7/
 ```
 
-After running `gradeAlert` on a `CSV` file, you can create an instant listing of grade book files
-which are placed in `pairings.txt`. Please use the following bash command for this task. 
-
-``` bash
-ls -l | cut -d " " -f 11 | sort | uniq > pairings.txt
-```
-
-__Note: Be sure to remove all spaces in the `pairings.txt` file.__
-
-For his or her own requirements, the user is to modify this file, which is essentially a `csv`
-file that could be created by a spreadsheet such as [LibreOffice](https://www.libreoffice.org/)
-Calc. If the pairing file is not present when the option `-P` is invoked, then an error message
-will result and end the __Grade_Alert_rs__ execution.
-
 ###### Output
 The output for the command `cargo run -- -i sampleData/demoGrades_short.csv` is shown below.
-```
-	 Package name: 'grade_alert_rs2'.
-	 Package version: '0.1.0'.
-	 Package edition: '2024'.
-
-Headers: StringRecord(["Student Name", "Student ID", "Activity 01", "Activity 01 Comments", "Activity 02", "Activity 02 comments", "Activity 03", "Activity 03 comments"])
-
-	 Copied file 0_out/student1.md to studentGradeBook_Repos/gradebook_A/student1.md
-	 Copied file 0_out/student2.md to studentGradeBook_Repos/gradebook_B/student2.md
-	 Copied file 0_out/student3.md to studentGradeBook_Repos/gradebook_C/student3.md
-	 Copied file 0_out/student4.md to studentGradeBook_Repos/gradebook_D/student4.md
-	 Directory does not exist: studentGradeBook_Repos/gradebook_E/.
-	 File 0_out/student5.md was not copied.
-	 Copied file 0_out/student6.md to studentGradeBook_Repos/gradebook_F/student6.md
-	 Copied file 0_out/student7.md to studentGradeBook_Repos/gradebook_G/student7.md
-	 Copied file 0_out/student7.md to studentGradeBook_Repos/x_gradebook_G/student7.md
-
-```
+![screenshot](graphics/posting.png)
 
 ### DirNames
 
@@ -206,35 +179,14 @@ student_repos/grade-book-student6/
 student_repos/grade-book-student7/
 ```
 
-The `dirNames.txt` file may be used with the `bulkPusher.sh` script (explained below) for bulk pushing
-using `git`. We note that this file is especially useful since it only lists the successful copies
-of gradebook files into corresponding repositories. If an error occurred during copying, then the
-program would skip the repository and the `dirNames` would have no listing for the offending
-repository.
+The File `dirNames.txt` is created in the `0_out/` directory and is to be moved to the root directory
+where the `bulkPusher.sh` script is located so that this bash script can push each student repository to GitHub. This file contains the paths of the repositories to which we push.
 
 ### Pushing in Bulk
 
 Each student who has accepted the grade book "assignment" will have a repository that the instructor
-an access. Sadly, the [GitHub Assistant](http://https://classroom.github.com/assistant)
-(link: https://classroom.github.com/assistant) will not work to create repositories into which grades
-may be pushed. Instead, the instructor is to clone each of the grade book "assignment" repositories
-listed by GitHub Classroom and then copy the individual gradebook files into each repository.
+an access. Once the grade reports have been automaticall posted, the grade book repositories may now be pushed by the instructor using the below `bulkPusher.sh` script.
 
-The creation of multiple gradebook repositories may be done by adding the `git clone` statements
-into a script file such as the included file, `repoBuilder.sh` and then running the script using,
-`sh repoBuilder.sh`. The user is advised to edit this script file as necessary -- there are two
-lines that have been added create a directory called `student_repos/` and then to copy in all
-repositories starting with `gradebook_` into the directory.
-
-Grade book repositories may now be pushed by the instructor using the below `bulkPusher.sh` script.
-
-After completing course grades save a copy of the spreadsheet as a CSV file. Grader-Alert may be
-executed with the CSV file as the parameter. The resulting files will have to be placed into the
-individual grade book repositories.
-
-To facilitate the pushing of all these repositories, the below script
-(located in `src/bulkPusher.sh`) may be be used. To execute this script in Linux and MacOS, use
-the command, `sh bulkPusher.sh` when the files have been copied into the grade book repositories.
 
 ```bash
 
@@ -266,27 +218,6 @@ done
 rm mydir
 ```
 
-The file, `dirNames.txt` contains the paths of the repositories to which we push. To conveniently
-prepare this file, begin with the following command from the directory where the class
-repositories are stored.
-
-``` bash
-ls > dirNames.txt
-```
-
-This file is to be edited to contain only the paths to the student grade book repositories. This
-file is then to be stored in the same root as the repositories so that the `bulkPushers.sh` can
-find it (and the repository paths it contains) when run.
-
-The contents of the student repositories directory should be similar to the following.
-```
-repos/gradebook-student1
-repos/gradebook-student2
-...
-repos/dirNames.txt
-repos/bulkPusher.sh
-```
-
 In a convenient setup, the repositories, the files `dirNames.txt` and `bulkPusher.sh` are to stored
 in root directory. The structure of the file system is discussed below.
 
@@ -296,30 +227,31 @@ The files are to be arranged in the following way for a typical usage. Note, thi
 shows the demonstration files.
 
 ```
- ./0_out/
-   - dirNames.txt # this may need to be placed in the root directory
-   - student1_gradebook.md
-   - student2_gradebook.md
-   - student3_gradebook.md
-   - student4_gradebook.md
-   - student5_gradebook.md
-   - student6_gradebook.md
-   - student7_gradebook.md
+(grade_alert_rs project files)
+ 
+./0_out/
+  - dirNames.txt (this may need to be placed in the root directory)
+  student1_gradebook.md
+  student2_gradebook.md
+  student3_gradebook.md
+  student4_gradebook.md
+  student5_gradebook.md
+  student6_gradebook.md
+  student7_gradebook.md
 
- ./student_repos/
-   - grade-book-student1/
-   - grade-book-student2/
-   - grade-book-student3/
-   - grade-book-student4/
-   - grade-book-student5/
-   - grade-book-student6/
-   - grade-book-student7/
+./student_repos/
+  grade-book-student1/
+  grade-book-student2/
+  grade-book-student3/
+  grade-book-student4/
+  grade-book-student5/
+  grade-book-student6/
+  grade-book-student7/
    
- ./
- - bulkPusher.sh
- - demoGrades_short.csv
- - gradeAlert.py
- - pairings.txt
+./
+./bulkPusher.sh
+./demoGrades_short.csv
+./pairings.txt
 ```
 
 *Note: As the user uses __Grade_Alert_rs__ to handle gradebook repositories and markdown files, having

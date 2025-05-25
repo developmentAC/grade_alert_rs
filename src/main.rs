@@ -1,3 +1,4 @@
+// Import necessary crates for command-line parsing, colored output, CSV handling, and file I/O
 use clap::{Arg, Command};
 use colored::*;
 // use csv::{ReaderBuilder, WriterBuilder};
@@ -6,16 +7,15 @@ use std::fs::create_dir_all;
 use std::io;
 use std::{error::Error, fs::File, io::Write};
 
+// Import the module for extracting version info from Cargo.toml
 mod toml_extract; // extract and print the version information according to the toml file
 
+// Display a colored ASCII banner for the program
 fn show_banner() {
     // banner ref: https://manytools.org/hacker-tools/ascii-banner/
-
     //logo design: "ticks", use "█" to replace "/\" chars, "_" replaced with space
     //     let banner = String::from(
-    //         "
-    // grade_alert_rs
-    //         "
+    //         "\ngrade_alert_rs\n        "
     //     );
     //     colour_print(&banner, "purple")
 
@@ -23,6 +23,7 @@ fn show_banner() {
     println!("{}", msg);
 }
 
+// Print colored text to the terminal, with different color options
 fn colour_print(text: &str, colour: &str) {
     match colour {
         "flush_green" => {
@@ -62,6 +63,7 @@ fn colour_print(text: &str, colour: &str) {
     }
 } // end of colour_print()
 
+// Main entry point of the program
 fn main() -> Result<(), Box<dyn Error>> {
     // Show the banner
     show_banner();
@@ -76,19 +78,20 @@ fn main() -> Result<(), Box<dyn Error>> {
     let output_dir = "0_out";
     create_dir_all(output_dir)?;
 
-    // Get the input and pairings file paths
+    // Get the input and pairings file paths from command-line arguments
     let input_file = matches.get_one::<String>("input").unwrap();
     let pairings_file = matches.get_one::<String>("pairings").unwrap();
 
-    // Process the input CSV file
+    // Process the input CSV file and generate markdown files
     process_csv(input_file, output_dir)?;
 
-    // Process the pairings file
+    // Process the pairings file to copy files to their destinations
     process_pairings(pairings_file, output_dir);
 
     Ok(())
 }
 
+// Parse command-line arguments using clap
 fn parse_arguments() -> clap::ArgMatches {
     Command::new("Grade Alert Utility")
         .version("1.0")
@@ -109,17 +112,18 @@ fn parse_arguments() -> clap::ArgMatches {
                 .value_parser(clap::value_parser!(String))
                 .default_value("pairings.txt")
                 .required(false)
-                .help("Pairings file to determine file copy destinations"),
+                .help("Include Pairings file to determine file copy destinations"),
         )
         .get_matches()
 }
 
+// Read the input CSV file and generate markdown files for each record
 fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>> {
     // Open the input CSV file
     let input = File::open(input_file)?;
     let mut rdr = ReaderBuilder::new().has_headers(true).from_reader(input);
 
-    // Read the headers
+    // Read the headers from the CSV file
     let headers = rdr.headers()?.clone();
     println!("Headers: {:?}\n", headers);
 
@@ -127,7 +131,7 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
     for result in rdr.records() {
         let record = result?;
 
-        // Generate the filename from the first column
+        // Generate the filename from the first column (student name or ID)
         let filename = format!(
             "{}/{}.md",
             output_dir,
@@ -147,6 +151,7 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
     Ok(())
 }
 
+// Read the pairings file and copy generated markdown files to their destination directories
 fn process_pairings(pairings_file: &str, output_dir: &str) {
     let mut dir_names = std::collections::HashSet::new(); // Use a HashSet to avoid duplicates
 
@@ -159,23 +164,13 @@ fn process_pairings(pairings_file: &str, output_dir: &str) {
         return;
     }
 
-    // Read the pairings file
+    // Read the pairings file (each line: source_file,destination_dir)
     let pairings_content = std::fs::read_to_string(pairings_file).expect("Missing pairings.txt?");
     for line in pairings_content.lines() {
         let parts: Vec<&str> = line.split(',').collect();
         if parts.len() == 2 {
             let source_file = format!("{}/{}", output_dir, parts[0]);
             let destination_dir = parts[1];
-
-
-                // // Create the destination directories if they do not exist :: is this necessary?
-            // if let Err(e) = std::fs::create_dir_all(destination_dir) {
-            //     eprintln!("Failed to create directory {}: {}", destination_dir, e);
-            //     continue;
-            // } else {
-            //     println!("Created directory: {}", destination_dir);
-            // }
-
 
             // Add the destination directory to the set
             dir_names.insert(destination_dir.to_string());
@@ -192,7 +187,7 @@ fn process_pairings(pairings_file: &str, output_dir: &str) {
                 continue;
             }
 
-            // Copy the file to the destination directory
+            // Copy the file to the destination directory (filename is the same as in output_dir)
             let destination_file = format!("{}{}", destination_dir, parts[0]);
             if let Err(e) = std::fs::copy(&source_file, &destination_file) {
                 let msg = format!(
@@ -211,7 +206,7 @@ fn process_pairings(pairings_file: &str, output_dir: &str) {
         }
     }
 
-    // Write the list of directories to dirNames.txt
+    // Write the list of unique destination directories to dirNames.txt
     let dir_names_file = format!("{}/dirNames.txt", output_dir);
     let mut file = File::create(&dir_names_file).expect("Failed to create dirNames.txt");
     for dir in dir_names {
