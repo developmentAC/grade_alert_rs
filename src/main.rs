@@ -125,7 +125,13 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
 
     // Read the headers from the CSV file
     let headers = rdr.headers()?.clone();
-    println!("Headers: {:?}\n", headers);
+    // println!("Headers: {:?}\n", headers); //debug print
+
+    // Iterate over each record in the CSV file
+    println!("CSV Headers:");
+    for header in headers.iter() {
+        println!(" {}", header);
+    }
 
     // Process each row in the CSV file
     for result in rdr.records() {
@@ -144,8 +150,29 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
 
         // Write each column's data with its header
         for (header, value) in headers.iter().zip(record.iter()) {
-            writeln!(file, "**{}**: {}", header, value)?;
+            // writeln!(file, "**{}** : {}", header, value)?; //bold markdown for header
+
+            //            println!("{} : {}", header, value); //debug print
+
+            if header != "" {
+                //empty header check
+
+                // print!("WRITING ||| {} : {}\n", header, value); //debug print
+                writeln!(file, "{} | {}", header, value)?;
+            } else {
+                // print!("EMPTY HEADER SKIPPED\n"); //debug print
+                writeln!(file, " ")?;
+                // continue; // Skip empty headers, line not necessary at this time
+            }
         }
+
+        // Original for_loop code below. Leave for now
+        // // Write each column's data with its header
+        // for (header, value) in headers.iter().zip(record.iter()) {
+        //     // writeln!(file, "**{}** : {}", header, value)?; //bold markdown for header
+        //     writeln!(file, "{} : {}", header, value)?;
+
+        // }
     }
 
     Ok(())
