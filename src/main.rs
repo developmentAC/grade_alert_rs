@@ -12,12 +12,35 @@ mod toml_extract; // extract and print the version information according to the 
 
 // Display a colored ASCII banner for the program
 fn show_banner() {
-    // banner ref: https://manytools.org/hacker-tools/ascii-banner/
-    //logo design: "ticks", use "█" to replace "/\" chars, "_" replaced with space
-    //     let banner = String::from(
-    //         "\ngrade_alert_rs\n        "
-    //     );
-    //     colour_print(&banner, "purple")
+
+    let banner = r#"
+
+     ██████╗    ██████╗        ███╗    ██████╗    ███████╗   
+    ██╔════╝    ██╔══██╗      ████╗    ██╔══██╗   ██╔════╝   
+    ██║  ███╗   ██████╔╝     ██╔██╗    ██║  ██║   █████╗     
+    ██║   ██║   ██╔══██╗    ██╔╝██╗    ██║  ██║   ██╔══╝     
+    ╚██████╔╝   ██║  ██║   ███████╗    ██████╔╝   ███████╗   
+     ╚═════╝    ╚═╝  ╚═╝   ╚══════╝    ╚═════╝    ╚══════╝   
+    
+        ███╗    ██╗        ███████╗   ██████╗    ████████╗   
+       ████╗    ██║        ██╔════╝   ██╔══██╗   ╚══██╔══╝   
+      ██╔██╗    ██║        █████╗     ██████╔╝      ██║      
+     ██╔╝██╗    ██║        ██╔══╝     ██╔══██╗      ██║      
+    ███████╗    ███████╗   ███████╗   ██║  ██║      ██║      
+    ╚══════╝    ╚══════╝   ╚══════╝   ╚═╝  ╚═╝      ╚═╝  
+    
+    ██████╗    ███████╗   
+    ██╔══██╗   ██╔════╝   
+    ██████╔╝   ███████╗   
+    ██╔══██╗   ╚════██║   
+    ██║  ██║   ███████║   
+    ╚═╝  ╚═╝   ╚══════╝ 
+    
+ "#;
+    println!("{}", banner);
+    // Print the banner in purple color
+    colour_print(&banner, "blue");
+
 
     let msg = format!("\n\t grade_alert_rs\n").bright_green().bold();
     println!("{}", msg);
