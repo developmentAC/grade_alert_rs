@@ -204,9 +204,10 @@ date > 0_thisLastPush.txt
 pwd > mydir
 for z in `cat mydir`; do cd $z; done
 
-# If the dirNames.txt is not in the directory 0_out/
+# If the dirNames.txt is in the root directory
 # for DIRNAME in $(cat dirNames.txt)
 
+# If the dirNames.txt is in another directory like 0_out/
 for DIRNAME in $(cat 0_out/dirNames.txt)
 do
     cd $DIRNAME
