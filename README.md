@@ -187,11 +187,9 @@ where the `bulkPusher.sh` script is located so that this bash script can push ea
 Each student who has accepted the grade book "assignment" will have a repository that the instructor
 an access. Once the grade reports have been automaticall posted, the grade book repositories may now be pushed by the instructor using the below `bulkPusher.sh` script.
 
-
 ```bash
-
 # Bulk Pusher script.
-# Date: 24 April 2025
+# Date: 21 September 2025
 # Oliver Bonham-Carter, obonhamcarter@allegheny.edu
 # This script uses the File, dirNames.txt, to locate repositories to push
 # The current date is printed in the commit message of the submit
@@ -205,13 +203,17 @@ date > 0_thisLastPush.txt
 
 pwd > mydir
 for z in `cat mydir`; do cd $z; done
-for DIRNAME in $(cat dirNames.txt)
+
+# If the dirNames.txt is not in the directory 0_out/
+# for DIRNAME in $(cat dirNames.txt)
+
+for DIRNAME in $(cat 0_out/dirNames.txt)
 do
     cd $DIRNAME
     echo Checking: $DIRNAME
-     git add -A
-     git commit -m "Grade update: $NOW"
-     git push
+    git add -A
+    git commit -m "Grade update: $NOW"
+    git push
     cd $z/
 done
 
