@@ -160,12 +160,32 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
     for result in rdr.records() {
         let record = result?;
 
-        // Generate the filename from the first column (student name or ID)
+       // Generate the filename from the first column (student name or ID)
         let filename = format!(
             "{}/{}.md",
             output_dir,
-            record.get(0).unwrap().trim().replace(" ", "")
+            record.get(0).unwrap().trim()
+                .chars()
+                .map(|c| {
+                    if c.is_ascii_alphabetic() {
+                        c.to_ascii_lowercase()
+                    } else if c.is_ascii_digit() {
+                        c
+                    } else {
+                        '_'
+                    }
+                })
+                .collect::<String>()
         );
+
+
+// originally
+    //    // Generate the filename from the first column (student name or ID)
+    //     let filename = format!(
+    //         "{}/{}.md",
+    //         output_dir,
+    //         record.get(0).unwrap().trim().replace(" ", "")
+    //     );
 
         // Create and write to the markdown file
         let mut file = File::create(&filename)?;
