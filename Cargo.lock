@@ -166,7 +166,7 @@ dependencies = [
 
 [[package]]
 name = "grade_alert_rs"
-version = "0.14.1"
+version = "0.14.2"
 dependencies = [
  "clap",
  "colored",

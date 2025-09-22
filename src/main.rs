@@ -37,7 +37,7 @@ fn show_banner() {
     ╚═╝  ╚═╝   ╚══════╝ 
     
  "#;
-    println!("{}", banner);
+    // println!("{}", banner); //print in default color
     // Print the banner in purple color
     colour_print(&banner, "blue");
 
@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Parse command-line arguments using clap
 fn parse_arguments() -> clap::ArgMatches {
     Command::new("Grade Alert Utility")
-        .version("0.14.1")
+        .version("0.14.2")
         .author("Oliver Bonham-Carter <obonhamcarter@allegheny.edu>")
         .about("Grade alert utility for teachers")
         .arg(
