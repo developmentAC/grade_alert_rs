@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 // Parse command-line arguments using clap
 fn parse_arguments() -> clap::ArgMatches {
     Command::new("Grade Alert Utility")
-        .version("0.14.2")
+        .version("0.14.3")
         .author("Oliver Bonham-Carter <obonhamcarter@allegheny.edu>")
         .about("Grade alert utility for teachers")
         .arg(
@@ -201,7 +201,7 @@ fn process_csv(input_file: &str, output_dir: &str) -> Result<(), Box<dyn Error>>
                 //empty header check
 
                 // print!("WRITING ||| {} : {}\n", header, value); //debug print
-                writeln!(file, "{} | {}", header, value)?;
+                writeln!(file, "* {} | {}", header, value)?;
             } else {
                 // print!("EMPTY HEADER SKIPPED\n"); //debug print
                 writeln!(file, " ")?;
